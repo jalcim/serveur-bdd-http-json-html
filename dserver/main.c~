@@ -1,0 +1,45 @@
+int main()//void servershell(int pid)
+{
+	t_server *server;
+
+	server = ft_serv_init();
+	ft_socktcp(&server->sock, PORT, server->server);
+	new_connect(server);
+	recup(server);
+
+	while (1)
+	  acceuil(server);
+}
+
+void acceuil(t_server *server, int pid)
+{
+	char cmd;
+	char *user;
+	char *buffer;
+	int nb_dir;
+
+	ft_accept(server);
+	server->connection++;
+	user = ft_fd_in_str(server->sock);
+	if (!(server->pid = fork()))
+	{
+		cmd = cmd_sock(server->sock);
+		if (cmd == 'd' || cmd == 'f')
+		{
+			nb_dir = 0;
+ 			if (cmd == 'd')
+				nb_dir = nb_dir_sock(server->sock);
+			ft_recv_file(server->sock, nb_dir);
+		}
+		else if (cmd == 'c' || cmd == 'x')
+		{
+			buffer = ft_fd_in_str(server->sock);
+			servcom(cmd, user, buffer, pid, server->sock);
+		}//une suite de la connexion au lieu de la couper ?
+		close(server->sock);
+		exit(0);
+ 	}
+}
+
+char cmd_sock(int sock)
+{

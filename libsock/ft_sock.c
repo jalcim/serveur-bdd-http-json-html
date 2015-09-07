@@ -40,16 +40,17 @@ void ft_waitsocktcp(int sock, t_pollfd *event, int size_fille, int time)
 
 t_server *ft_serv_init()
 {
-	t_server *server;
+  t_server *server;
 
-	if (!(server = (t_server *)malloc(sizeof(t_server))))
-		error("serv_init -> ");
-	ft_bzero(server, sizeof(t_server));
-	server->server = (t_sockaddr_in *)malloc(sizeof(t_sockaddr_in));
-    ft_bzero(server->server, sizeof(t_sockaddr_in));
-	server->list = NULL;
-    server->connection = 0;
-	return (server);
+  if (!(server = (t_server *)malloc(sizeof(t_server))))
+    error("serv_init -> ");
+  ft_bzero(server, sizeof(t_server));
+  server->server = (t_sockaddr_in *)malloc(sizeof(t_sockaddr_in));
+  ft_bzero(server->server, sizeof(t_sockaddr_in));
+  server->list = NULL;
+  server->connection = 0;
+
+  return (server);
 }
 
 void ft_waitsock(int fd)
